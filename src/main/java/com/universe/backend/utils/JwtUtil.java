@@ -1,15 +1,13 @@
 package com.universe.backend.utils;
 
-import java.util.Date;
-
-import javax.crypto.SecretKey;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
 
 @Component
 public class JwtUtil {
@@ -32,12 +30,16 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    private String extractEmail(String token) {
+    public String extractEmail(String token) {
         return extractClaims(token).getSubject();
     }
 
-    private String extractRole(String token) {
+    public String extractRole(String token) {
         return extractClaims(token).get("role", String.class);
+    }
+
+    public boolean isTokenExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
     }
 
     public String generateToken(String email, String role) {
@@ -50,8 +52,9 @@ public class JwtUtil {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        Claims claims = extractClaims(token);
-        return claims.getExpiration().after(new Date());
+    public boolean isValidToken(String token, String email, String role) {
+        String tokenEmail = extractEmail(token);
+        String tokenRole = extractRole(token);
+        return tokenEmail.equals(email) && tokenRole.equals(role) && !isTokenExpired(token);
     }
 }
