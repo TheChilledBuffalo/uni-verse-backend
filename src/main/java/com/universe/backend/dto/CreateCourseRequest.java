@@ -1,6 +1,5 @@
 package com.universe.backend.dto;
 
-import com.universe.backend.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
