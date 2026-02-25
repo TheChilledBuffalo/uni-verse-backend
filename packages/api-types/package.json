@@ -1,0 +1,12 @@
+{
+  "name": "@universe/api-types",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "generate": "openapi-typescript ../../api/build/openapi/openapi.json --output src/index.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.13.0"
+  }
+}
